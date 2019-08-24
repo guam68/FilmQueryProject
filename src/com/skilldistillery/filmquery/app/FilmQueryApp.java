@@ -2,6 +2,7 @@ package com.skilldistillery.filmquery.app;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -40,8 +41,14 @@ public class FilmQueryApp {
 
 			switch (choice) {
 			case "1":
+				int id = 0;
 				System.out.println("Enter the ID");
-				int id = input.nextInt();
+				try {
+					id = input.nextInt();
+				} catch (InputMismatchException e) {
+					System.out.println("\nNot a valid input\n");
+					break LOOP;
+				}
 				film = new DatabaseAccessorObject().findFilmByFilmId(id);
 				if (film == null) {
 					System.out.println("\nNo film found\n");
@@ -55,7 +62,7 @@ public class FilmQueryApp {
 				System.out.println("Enter the keyword");
 				String keyword = input.next();
 				films = new DatabaseAccessorObject().findFilmsByKeyword(keyword);
-				if (films.size() == 0){
+				if (films.size() == 0) {
 					System.out.println("\nNo films found\n");
 				}
 				for (Film f : films) {
@@ -66,19 +73,19 @@ public class FilmQueryApp {
 				break;
 			case "3":
 				break LOOP;
-			default: 
-				System.out.println("Not a valid option");
+			default:
+				System.out.println("\nNot a valid option\n");
 				continue LOOP;
 			}
 
 		}
 
 	}
-	
+
 	public void printLang(Film film) {
 		System.out.println("\tLanguage: " + new DatabaseAccessorObject().getLangById(film.getLanguage_id()) + "\n");
 	}
-	
+
 	public void printActors(Film film) {
 		System.out.println("\tActors: ");
 		for (Actor actor : film.getActors()) {
