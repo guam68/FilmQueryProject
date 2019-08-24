@@ -43,6 +43,10 @@ public class FilmQueryApp {
 				System.out.println("Enter the ID");
 				int id = input.nextInt();
 				film = new DatabaseAccessorObject().findFilmByFilmId(id);
+				if (film == null) {
+					System.out.println("\nNo film found\n");
+					break;
+				}
 				System.out.println(film);
 				printActors(film);
 				printLang(film);
